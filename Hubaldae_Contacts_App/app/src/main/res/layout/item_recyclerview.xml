@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/Photo_Circle"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:padding="10dp"
+        android:src="@drawable/sample_0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/Photo"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="15dp"
+        android:padding="@dimen/icon_padding"
+        android:scaleType="centerCrop"
+        android:src="@drawable/sample_0"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:hint="Name"
+        android:padding="@dimen/list_item_padding"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/list_item_text_size1"
+        app:layout_constraintBottom_toTopOf="@+id/textPhoneNumber"
+        app:layout_constraintEnd_toStartOf="@+id/favorite"
+        app:layout_constraintStart_toEndOf="@id/Photo_Circle"
+        app:layout_constraintTop_toTopOf="@id/Photo_Circle" />
+
+    <TextView
+        android:id="@+id/textPhoneNumber"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Age"
+        android:padding="@dimen/list_item_padding"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/list_item_text_size2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/favorite"
+        app:layout_constraintStart_toStartOf="@id/textName"
+        app:layout_constraintTop_toBottomOf="@id/textName" />
+
+    <ImageView
+        android:id="@+id/favorite"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginHorizontal="10dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_favorite" />
+
+    <ImageView
+        android:id="@+id/favoritenot"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginHorizontal="10dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_favorite_not" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
