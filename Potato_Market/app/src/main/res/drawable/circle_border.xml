@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 원형 배경색 -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/white" />
+        </shape>
+    </item>
+    <!-- 원형 테두리 -->
+    <item>
+        <shape android:shape="oval">
+            <stroke android:color="#909090" android:width="1dp" />
+        </shape>
+    </item>
+</layer-list>
