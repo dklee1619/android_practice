@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FF7935"/>  <!-- 원의 색상 (예: 빨간색) -->
+
+    <!-- 원 모양을 만들기 위해서는 각 모서리의 반경을 크게 설정해야 합니다.
+         뷰의 너비와 높이가 동일하게 설정되면 완벽한 원 모양이 됩니다. -->
+    <corners android:radius="10dp"/>
+</shape>
