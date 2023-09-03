@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.Manifest // << 이거 추가됨 이거 추가됨 이거 추가됨 이거 추가됨 이거 추가됨 이거 추가됨
 import android.view.View
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -12,12 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.a6_5listview2.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity() {
-
+class MainActivity : AppCompatActivity(), MyAdapter.OnItemClickListener {
     private lateinit var binding: ActivityMainBinding
     companion object {
         const val REQUEST_CODE_READ_CONTACTS = 1001
     }
+
+    private lateinit var adapter: MyAdapter
+    private lateinit var adapter2: MyAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -28,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE_READ_CONTACTS)
         }
 
-        val contactsList = mutableListOf<Contact>()
+//        val contactsList = mutableListOf<Contact>()
 
 //        val cursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null)
 //        cursor?.let {
@@ -53,18 +56,18 @@ class MainActivity : AppCompatActivity() {
         dataList.add(Contact(R.drawable.sample_9, "차차차", "010-0000-0000",false))
         dataList.add(Contact(R.drawable.sample_10, "카카카", "010-0000-0000",false))
 
-        binding.recyclerView.adapter = MyAdapter(dataList)
+        adapter = MyAdapter(dataList,this,1)
+        adapter2 = MyAdapter(dataList,this,2)
+        binding.recyclerView.adapter = adapter // 1
+        binding.recyclerView.layoutManager = LinearLayoutManager(this) // 1
 
-        val adapter = MyAdapter(dataList, object: MyAdapter.OnItemClickListener {
-            override fun onItemClicked(position: Int, contact: Contact) {
-                // 여기에서 클릭 이벤트 처리
-            }
-        })
-        recyclerView.adapter = adapter
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewfavorite.adapter = adapter2 // 1
+        binding.recyclerViewfavorite.layoutManager = LinearLayoutManager(this) // 1
 
-
-
+    }    override fun onFavoriteImageViewClicked(position: Int, item: Contact) {
+        item.isFavorite = !(item.isFavorite)
+        adapter.notifyItemChanged(position)
+        adapter2.notifyItemChanged(position)
+        // 아이템 클릭 시 동작하는 코드
     }
 }
