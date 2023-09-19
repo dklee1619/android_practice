@@ -22,16 +22,16 @@ class searchResultFragment : Fragment() {
     ): View? {
         _binding = FragmentSearchResultBinding.inflate(inflater, container, false) // 3. _binding값 지정해주기
         val response: Response? = arguments?.getParcelable("responseData")
-        binding.gridview.adapter = Adapter(response!!.documents)
+        if(response!=null){binding.gridview.adapter = Adapter(response!!.documents)
 //        binding.gridview.layoutManager = LinearLayoutManager(requireContext()) // 이 경우는 수직 리스트입니다.
-        binding.gridview.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.gridview.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)}
         return binding.root // 4. 최상위 뷰로 설정
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null // 5. 프래그먼트 뷰 사라지면 메모리누수를 방지하기위해 바인딩 풀고 null로
     }
 }
 
-// testtesttest
+// 프래그먼트에서 클릭온 리스너 구현하기, 어댑터쪽은 온클릭 호출??같은거만 하기

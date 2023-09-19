@@ -23,7 +23,8 @@ data class Document(
     val height: Int, // 이미지의 세로 길이
     val display_sitename: String, // 출처
     val doc_url: String, // 문서 URL
-    val datetime: String // 문서 작성시간, ISO 8601 형식
+    val datetime: String, // 문서 작성시간, ISO 8601 형식
+    var favoritestate: Boolean = false // 내가 임의로 추가해준 데이터
 ): Parcelable
 
 /*

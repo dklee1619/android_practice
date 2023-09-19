@@ -3,7 +3,7 @@ package com.example.imagesearchpage
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.net.toUri
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.imagesearchpage.data.Document
@@ -11,20 +11,50 @@ import com.example.imagesearchpage.databinding.ItemRecyclerviewBinding
 
 class Adapter(val item: List<Document>) : RecyclerView.Adapter<Adapter.Holder>() {
     override fun getItemCount(): Int {
-        Log.d("itemitem","${item.size}")
+        Log.d("itemitem", "${item.size}")
         return item.size
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         Glide.with(holder.itemView.context) // Glide를 활용해 url 주소에 연결된 이미지 binding 하기(좀 더 찾아보고 정리하기)
-            .load(item[position].image_url)
+            .load(item[position].image_url) // Glide를 활용해 크기도 받아올수 있게끔 해보자.
             .into(holder.Image)
-        holder.Text.text = item[position].doc_url
-        holder.Time.text = item[position].datetime
+//        val aspectRatio = item[position].height.toFloat() / item[position].width.toFloat()
+//        holder.Image.layoutParams.width = holder.Image.layoutParams.width
+//        holder.Image.scaleTyp
+//        holder.Image.layoutParams.height = (holder.Image.layoutParams.width * aspectRatio).toInt()
+        holder.Text.text = " [Image] " + item[position].display_sitename // 이거도 값 수정은 옮겨놔도 될듯 dsplay_sitename만 남기기.
+        holder.Time.text = item[position].datetime.substring(0, 19).replace("T", " ") // 이거도 substring부터는 옮겨놔도될듯
+        if (!item[position].favoritestate) {
+            holder.favorite.setImageResource(R.drawable.baseline_favorite_border_24)
+        }
+        if (item[position].favoritestate) {
+            holder.favorite.setImageResource(R.drawable.baseline_favorite_24)
+        }
+
+        holder.Image.setOnClickListener { // 셋온클릭리스너를 프래그먼트 쪽으로 옮기기.
+            if (MainActivity.fragstate) {
+                var state:Boolean = true
+                for(i in 0..MainActivity.item2.size-1)
+                {
+                    if(item[position].image_url == MainActivity.item2[i].image_url)
+                    {
+                       state= false
+                    }
+                }
+                if(state){MainActivity.item2.add(item[position])}
+                item[position].favoritestate = true
+            }else if(!MainActivity.fragstate) {
+//                MainActivity.item2[position].favoritestate = !MainActivity.item2[position].favoritestate
+                MainActivity.item2.removeAt(position)
+            }
+            notifyDataSetChanged() // 화면갱신
+        } // 리사이클러뷰 어뎁터에서 클릭 이벤트 구현하기
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val binding = ItemRecyclerviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemRecyclerviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return Holder(binding)
     }
 
@@ -32,6 +62,7 @@ class Adapter(val item: List<Document>) : RecyclerView.Adapter<Adapter.Holder>()
         val Image = binding.recyclerImage
         val Text = binding.recyclerText
         val Time = binding.recyclerTime
+        val favorite = binding.recyclerFavorite
     }
 }
 

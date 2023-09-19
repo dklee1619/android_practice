@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.imagesearchpage.Adapter
+import com.example.imagesearchpage.MainActivity.Companion.item2
 import com.example.imagesearchpage.R
 import com.example.imagesearchpage.data.Response
 import com.example.imagesearchpage.databinding.FragmentMyArchiveBinding
@@ -19,7 +21,9 @@ class myArchiveFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMyArchiveBinding.inflate(inflater, container, false) // 3. _binding값 지정해주기
-
+        binding.gridview.adapter = Adapter(item2)
+//        binding.gridview.layoutManager = LinearLayoutManager(requireContext()) // 이 경우는 수직 리스트입니다.
+        binding.gridview.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         return binding.root // 4. 최상위 뷰로 설정
     }
 
@@ -27,4 +31,7 @@ class myArchiveFragment : Fragment() {
         super.onDestroyView()
         _binding = null // 5. 프래그먼트 뷰 사라지면 메모리누수를 방지하기위해 바인딩 풀고 null로
     }
+
 }
+
+//
