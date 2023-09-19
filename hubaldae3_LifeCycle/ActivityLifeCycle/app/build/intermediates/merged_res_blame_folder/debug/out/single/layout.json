@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.example.lifecycle.app-mergeDebugResources-27:/layout/activity_main.xml",
+        "source": "com.example.lifecycle.app-main-30:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.example.lifecycle.app-mergeDebugResources-27:/layout/activity_sub.xml",
+        "source": "com.example.lifecycle.app-main-30:/layout/activity_sub.xml"
+    }
+]
