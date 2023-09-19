@@ -33,3 +33,5 @@ class searchResultFragment : Fragment() {
         _binding = null // 5. 프래그먼트 뷰 사라지면 메모리누수를 방지하기위해 바인딩 풀고 null로
     }
 }
+
+// testtesttest
