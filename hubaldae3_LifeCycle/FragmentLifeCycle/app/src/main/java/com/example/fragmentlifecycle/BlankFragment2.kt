@@ -105,39 +105,4 @@ class BlankFragment2 : Fragment() {
 `**onSaveInstanceState**`
 `**onDestroyView**`
 `**onDestroy**`
-추가 -> 제거 -> 추가
-2023-09-17 15:13:33.630  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onCreate1
-2023-09-17 15:13:33.630  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onCreateView2
-2023-09-17 15:13:33.640  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onViewCreated3
-2023-09-17 15:13:33.641  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onViewStateRestored4
-2023-09-17 15:13:33.641  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onStart5
-2023-09-17 15:13:33.646  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onResume6
-2023-09-17 15:13:42.077  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onPause7
-2023-09-17 15:13:42.077  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onStop8
-2023-09-17 15:13:42.078  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onSaveInstanceState9
-2023-09-17 15:13:42.079  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onDestroyView10
-2023-09-17 15:13:42.555  7454-7454  Fragment.B              com.example.fragmentlifecycle        D  onCreate1
-2023-09-17 15:13:42.561  7454-7454  Fragment.B              com.example.fragmentlifecycle        D  onCreateView2
-2023-09-17 15:13:42.562  7454-7454  Fragment.B              com.example.fragmentlifecycle        D  onViewCreated3
-2023-09-17 15:13:42.563  7454-7454  Fragment.B              com.example.fragmentlifecycle        D  onViewStateRestored4
-2023-09-17 15:13:42.564  7454-7454  Fragment.B              com.example.fragmentlifecycle        D  onStart5
-2023-09-17 15:13:42.565  7454-7454  Fragment.B              com.example.fragmentlifecycle        D  onResume6
-
-추가 -> 변환2 -> 변환1 -> 변환2
-2023-09-17 15:14:29.245  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onCreate1
-2023-09-17 15:14:29.245  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onCreateView2
-2023-09-17 15:14:29.256  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onViewCreated3
-2023-09-17 15:14:29.256  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onViewStateRestored4
-2023-09-17 15:14:29.256  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onStart5
-2023-09-17 15:14:29.267  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onResume6
-2023-09-17 15:14:32.652  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onPause7
-2023-09-17 15:14:32.652  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onStop8
-2023-09-17 15:14:32.653  7454-7454  Fragment.B              com.example.fragmentlifecycle        D  onCreate1
-2023-09-17 15:14:32.662  7454-7454  Fragment.B              com.example.fragmentlifecycle        D  onCreateView2
-2023-09-17 15:14:32.664  7454-7454  Fragment.B              com.example.fragmentlifecycle        D  onViewCreated3
-2023-09-17 15:14:32.664  7454-7454  Fragment.B              com.example.fragmentlifecycle        D  onViewStateRestored4
-2023-09-17 15:14:32.665  7454-7454  Fragment.B              com.example.fragmentlifecycle        D  onStart5
-2023-09-17 15:14:32.667  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onSaveInstanceState9
-2023-09-17 15:14:32.667  7454-7454  Fragment.A              com.example.fragmentlifecycle        D  onDestroyView10
-2023-09-17 15:14:32.667  7454-7454  Fragment.B              com.example.fragmentlifecycle        D  onResume6
  */

@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity() {
 
 
 /*
-1. Activity에는 Fragment를 추가하거나 제거하는 버튼들이 있어야 한다고 한다.123
+1. Activity에는 Fragment를 추가하거나 제거하는 버튼들이 있어야 한다고 한다.
 2. 프래그먼트를 호출해고 제거를 하면 될거같은데, 감이 안잡히네. 강의를 확인해 보아야겠다.
 3. 프래그먼트 클래스 만들기( New > Flagment > BlankFragment) 그리고 코드 지울꺼 지우기
 4. 액티비티에는 프래그먼트를 호출할 버튼과 프래그먼트를 표시할 영역이 필요하다. .xml에 만들어주자.
