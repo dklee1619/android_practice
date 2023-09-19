@@ -32,11 +32,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         item2 = loadData()
-        supportFragmentManager.beginTransaction().replace(R.id.Fragment, searchResultFragment)
+        binding.bottombarLeftText.setTextColor(Color.parseColor("#6200EE"))
+        binding.bottombarLeftImage.setColorFilter(Color.parseColor("#6200EE"))
+        binding.bottombarRightText.setTextColor(Color.parseColor("#666666"))
+        binding.bottombarRightImage.setColorFilter(Color.parseColor("#666666"))
+        supportFragmentManager.beginTransaction().replace(R.id.Fragment, searchResultFragment).commit()
 //        binding.topbarSearch.setText("송하영")
         binding.topbarSearchButton.setOnClickListener {
             query = binding.topbarSearch.text.toString()
             communicateNetWork(setUpDataParameter(query))
+            searchResultFragment.arguments = bundle
+            supportFragmentManager.beginTransaction().replace(R.id.Fragment, searchResultFragment).commit()
         }
         binding.bottombarLeftButton.setOnClickListener {
             val direction = "Left"

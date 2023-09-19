@@ -5,25 +5,38 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.imagesearchpage.Adapter
-import com.example.imagesearchpage.MainActivity.Companion.item2
-import com.example.imagesearchpage.R
-import com.example.imagesearchpage.data.Response
+import com.example.imagesearchpage.MainActivity
+import com.example.imagesearchpage.data.Document
 import com.example.imagesearchpage.databinding.FragmentMyArchiveBinding
 
 class myArchiveFragment : Fragment() {
-    private var _binding: FragmentMyArchiveBinding? = null // 1. _binding의 기본값은 null 그리고 null이라 자료형에도 ? 붙음 그리고 var임
+    private var _binding: FragmentMyArchiveBinding? =
+        null // 1. _binding의 기본값은 null 그리고 null이라 자료형에도 ? 붙음 그리고 var임
     private val binding get() = _binding!! // 2. get()은 커스텀 게더 _binding이 null이 아닐때만 binding에 값이 전달됨
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMyArchiveBinding.inflate(inflater, container, false) // 3. _binding값 지정해주기
-        binding.gridview.adapter = Adapter(item2)
+        _binding =
+            FragmentMyArchiveBinding.inflate(inflater, container, false) // 3. _binding값 지정해주기
+        binding.gridview.adapter = Adapter(
+            MainActivity.item2,
+            (object : Adapter.OnItemClickListener {
+                override fun onItemClick(position: Int, document: Document) {
+                    if (!MainActivity.fragstate) {
+//                MainActivity.item2[position].favoritestate = !MainActivity.item2[position].favoritestate
+                        MainActivity.item2.removeAt(position)
+                    }
+                }
+            })
+        )
+
 //        binding.gridview.layoutManager = LinearLayoutManager(requireContext()) // 이 경우는 수직 리스트입니다.
-        binding.gridview.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.gridview.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
         return binding.root // 4. 최상위 뷰로 설정
     }
 

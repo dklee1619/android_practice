@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.imagesearchpage.data.Document
 import com.example.imagesearchpage.databinding.ItemRecyclerviewBinding
 
-class Adapter(val item: List<Document>) : RecyclerView.Adapter<Adapter.Holder>() {
+class Adapter(val item: List<Document>,private val clickListener: OnItemClickListener) : RecyclerView.Adapter<Adapter.Holder>() {
     override fun getItemCount(): Int {
         Log.d("itemitem", "${item.size}")
         return item.size
@@ -33,21 +33,23 @@ class Adapter(val item: List<Document>) : RecyclerView.Adapter<Adapter.Holder>()
         }
 
         holder.Image.setOnClickListener { // 셋온클릭리스너를 프래그먼트 쪽으로 옮기기.
-            if (MainActivity.fragstate) {
-                var state:Boolean = true
-                for(i in 0..MainActivity.item2.size-1)
-                {
-                    if(item[position].image_url == MainActivity.item2[i].image_url)
-                    {
-                       state= false
-                    }
-                }
-                if(state){MainActivity.item2.add(item[position])}
-                item[position].favoritestate = true
-            }else if(!MainActivity.fragstate) {
-//                MainActivity.item2[position].favoritestate = !MainActivity.item2[position].favoritestate
-                MainActivity.item2.removeAt(position)
-            }
+            val document = item[position]
+            clickListener.onItemClick(position,document) // 어댑터 -> 프래그먼트 클릭리스너 옮기기
+//            if (MainActivity.fragstate) {
+//                var state:Boolean = true
+//                for(i in 0..MainActivity.item2.size-1)
+//                {
+//                    if(item[position].image_url == MainActivity.item2[i].image_url)
+//                    {
+//                       state= false
+//                    }
+//                }
+//                if(state){MainActivity.item2.add(item[position])}
+//                item[position].favoritestate = true
+//            }else if(!MainActivity.fragstate) {
+////                MainActivity.item2[position].favoritestate = !MainActivity.item2[position].favoritestate
+//                MainActivity.item2.removeAt(position)
+//            }
             notifyDataSetChanged() // 화면갱신
         } // 리사이클러뷰 어뎁터에서 클릭 이벤트 구현하기
     }
@@ -63,6 +65,10 @@ class Adapter(val item: List<Document>) : RecyclerView.Adapter<Adapter.Holder>()
         val Text = binding.recyclerText
         val Time = binding.recyclerTime
         val favorite = binding.recyclerFavorite
+    }
+
+    interface OnItemClickListener { // 어댑터 -> 프래그먼트 클릭리스너 옮기기 : 어댑터에서 클릭 리스너를 구현하는것은 좋지않아서 프래그먼트에서 사용하기 위한 클릭 리스너를 만드는 인터페이스
+        fun onItemClick(position: Int, document: Document)
     }
 }
 
