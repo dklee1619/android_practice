@@ -50,7 +50,9 @@ class Adapter(val item: List<Document>,private val clickListener: OnItemClickLis
 ////                MainActivity.item2[position].favoritestate = !MainActivity.item2[position].favoritestate
 //                MainActivity.item2.removeAt(position)
 //            }
-            notifyDataSetChanged() // 화면갱신
+//            notifyDataSetChanged() // 전체 화면갱신
+            this.notifyItemChanged(position) // 특정 아이템뷰만 갱신
+
         } // 리사이클러뷰 어뎁터에서 클릭 이벤트 구현하기
     }
 
@@ -70,6 +72,7 @@ class Adapter(val item: List<Document>,private val clickListener: OnItemClickLis
     interface OnItemClickListener { // 어댑터 -> 프래그먼트 클릭리스너 옮기기 : 어댑터에서 클릭 리스너를 구현하는것은 좋지않아서 프래그먼트에서 사용하기 위한 클릭 리스너를 만드는 인터페이스
         fun onItemClick(position: Int, document: Document)
     }
+
 }
 
 /*

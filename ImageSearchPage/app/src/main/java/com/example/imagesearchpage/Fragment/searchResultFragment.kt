@@ -1,6 +1,7 @@
 package com.example.imagesearchpage.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,27 +27,35 @@ class searchResultFragment : Fragment() {
         _binding =
             FragmentSearchResultBinding.inflate(inflater, container, false) // 3. _binding값 지정해주기
         val response: Response? = arguments?.getParcelable("responseData")
+        // 데이터 정렬하기 생각
         if (response != null) {
-            binding.gridview.adapter =
-                Adapter(response!!.documents, (object : Adapter.OnItemClickListener {
-                    override fun onItemClick(position: Int, document: Document) {
-                        if (MainActivity.fragstate) {
-                            // ... 나머지 로직
-                            if (MainActivity.fragstate) {
-                                var state: Boolean = true
-                                for (i in 0..MainActivity.item2.size - 1) {
-                                    if (document.image_url == MainActivity.item2[i].image_url) {
-                                        state = false
-                                    }
-                                }
-                                if (state) {
-                                    MainActivity.item2.add(document)
-                                }
-                                document.favoritestate = true
-                            }
-                        }
-                    }
-                }))
+            updateAdapter(response) // 메인 액티비티의 온클릭 리스너를 통해 프래그먼트의 어댑터를 갱신하기 위해 함수로 만들어준다.
+//            binding.gridview.adapter =
+//                Adapter(response!!.documents, (object : Adapter.OnItemClickListener {
+//                    override fun onItemClick(position: Int, document: Document) {
+//                        if (!document.favoritestate) {
+//                            if (MainActivity.fragstate) {
+//                                var state: Boolean = true
+//                                for (i in 0..MainActivity.item2.size - 1) {
+//                                    if (document.image_url == MainActivity.item2[i].image_url) {
+//                                        state = false
+//                                    }
+//                                }
+//                                if (state) {
+//                                    MainActivity.item2.add(document)
+//                                }
+//                                document.favoritestate = true
+//                            }
+//                        } else if (document.favoritestate) {
+//                            document.favoritestate = false
+//                            for (i in 0..MainActivity.item2.size - 1) {
+//                                if (document.image_url == MainActivity.item2[i].image_url) {
+//                                    MainActivity.item2.remove(document)
+//                                }
+//                            }
+//                        }
+//                    }
+//                }))
 //        binding.gridview.layoutManager = LinearLayoutManager(requireContext()) // 이 경우는 수직 리스트입니다.
             binding.gridview.layoutManager =
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
@@ -58,6 +67,35 @@ class searchResultFragment : Fragment() {
         super.onDestroy()
         _binding = null // 5. 프래그먼트 뷰 사라지면 메모리누수를 방지하기위해 바인딩 풀고 null로
     }
-}
 
-// 프래그먼트에서 클릭온 리스너 구현하기, 어댑터쪽은 온클릭 호출??같은거만 하기
+    fun updateAdapter(response: Response) {
+        binding.gridview.adapter =
+            Adapter(response.documents.sortedByDescending { it.datetime }, (object : Adapter.OnItemClickListener { //  response.documents 에서 response.documents.sortedByDescending { it.datetime } 로 수정
+                override fun onItemClick(position: Int, document: Document) {
+                    if (!document.favoritestate) {
+                        if (MainActivity.fragstate) {
+                            var state: Boolean = true
+                            for (i in 0..MainActivity.item2.size - 1) {
+                                if (document.image_url == MainActivity.item2[i].image_url) {
+                                    state = false
+                                }
+                            }
+                            if (state) {
+                                MainActivity.item2.add(document)
+                            }
+                            document.favoritestate = true
+                        }
+                    } else if (document.favoritestate) {
+                        document.favoritestate = false
+                        for (i in 0..MainActivity.item2.size - 1) {
+                            if (document.image_url == MainActivity.item2[i].image_url) {
+                                MainActivity.item2.remove(document)
+                            }
+                        }
+                    }
+                }
+            }))
+        binding.gridview.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+    }
+}

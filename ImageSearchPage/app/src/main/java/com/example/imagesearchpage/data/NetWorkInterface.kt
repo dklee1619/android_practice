@@ -13,15 +13,17 @@ interface NetWorkInterface {
         @GET("/v2/search/image") // https://dapi.kakao.com/v2/search/image 중 https://dapi.kakao.com/는 BASE_URL이고 나머지 v2/search/image
         suspend fun searchImages(
             @QueryMap param: HashMap<String, String>
-        ): Response
+//        ): Response
         // 이 메서드는 `Response` 타입의 응답을 반환.
         // https://dapi.kakao.com/v2/search/image?query=[query의 값]&sort=accuracy&page=1&size=80 이란 주소를
         // hashMapOf("query" to query,"sort" to "accuracy","page" to "1","size" to "80") 이란 해쉬맵으로 바꿔줌.
+        ): Response
+//        { // 응답 수정하기 // 인터페이스에서는 기능을 구현하면 안된다. 기능 분리를 위해 Response를 호출하는곳에서 코드 짜기.
+//            val response = NetWorkClient.imageNetWork.searchImages(param)
+//            val sortedDocuments = response.documents.sortedByDescending { it.datetime }
+//            return Response(response.meta, sortedDocuments)
+//        }
 
-    suspend fun fetchImages(param: HashMap<String, String>): List<Document> {
-        val response = imageNetWork.searchImages(param)
-        return response.documents.sortedBy { it.datetime }
-    }
 }
 /*
 [서비스 인터페이스 정의]

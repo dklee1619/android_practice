@@ -25,10 +25,18 @@ class myArchiveFragment : Fragment() {
             MainActivity.item2,
             (object : Adapter.OnItemClickListener {
                 override fun onItemClick(position: Int, document: Document) {
-                    if (!MainActivity.fragstate) {
-//                MainActivity.item2[position].favoritestate = !MainActivity.item2[position].favoritestate
-                        MainActivity.item2.removeAt(position)
-                    }
+                    MainActivity.item2.removeAt(position)
+                    binding.gridview.adapter?.notifyDataSetChanged() // 데이터 갱신을 해주지 않으면
+                    // java.lang.IndexOutOfBoundsException: Inconsistency detected. Invalid view holder adapter positionHolder 에러 발생
+                    // 리사이클러뷰의 데이터 세트와 내부 상태가 불일치할 때 발생
+//                    val indexToRemove = MainActivity.item2.indexOf(document)
+//
+//                    if (indexToRemove != -1) {
+//                        // 아이템 제거
+//                        MainActivity.item2.removeAt(indexToRemove)
+//                        // 리사이클러뷰에 알려주기
+//                        binding.gridview.adapter?.notifyItemRemoved(indexToRemove)
+//                    }
                 }
             })
         )
@@ -42,6 +50,7 @@ class myArchiveFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        (activity as MainActivity).saveData() // 보관함 나가면 자동저장
         _binding = null // 5. 프래그먼트 뷰 사라지면 메모리누수를 방지하기위해 바인딩 풀고 null로
     }
 

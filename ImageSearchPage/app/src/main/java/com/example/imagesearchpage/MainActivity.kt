@@ -18,8 +18,8 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    val searchResultFragment = searchResultFragment()
-    val myArchiveFragment = myArchiveFragment()
+    val searchResultFragment = searchResultFragment() // private by lazy { ~ }
+    val myArchiveFragment = myArchiveFragment() // private by lazy { ~ } 어뎁터 갱신이 느리거나 화면이 쌓이거나
     var query = ""
     val bundle: Bundle = Bundle()
 
@@ -32,17 +32,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         item2 = loadData()
-        binding.bottombarLeftText.setTextColor(Color.parseColor("#6200EE"))
-        binding.bottombarLeftImage.setColorFilter(Color.parseColor("#6200EE"))
-        binding.bottombarRightText.setTextColor(Color.parseColor("#666666"))
-        binding.bottombarRightImage.setColorFilter(Color.parseColor("#666666"))
-        supportFragmentManager.beginTransaction().replace(R.id.Fragment, searchResultFragment).commit()
+        binding.apply{ // 스코프함수로 묶어서 코드를 정리하자 !
+        bottombarLeftText.setTextColor(Color.parseColor("#6200EE"))
+        bottombarLeftImage.setColorFilter(Color.parseColor("#6200EE"))
+        bottombarRightText.setTextColor(Color.parseColor("#666666"))
+        bottombarRightImage.setColorFilter(Color.parseColor("#666666"))
+//        supportFragmentManager.beginTransaction().replace(R.id.Fragment, searchResultFragment).commit()
+        }
 //        binding.topbarSearch.setText("송하영")
         binding.topbarSearchButton.setOnClickListener {
             query = binding.topbarSearch.text.toString()
             communicateNetWork(setUpDataParameter(query))
-            searchResultFragment.arguments = bundle
-            supportFragmentManager.beginTransaction().replace(R.id.Fragment, searchResultFragment).commit()
+
         }
         binding.bottombarLeftButton.setOnClickListener {
             val direction = "Left"
@@ -51,9 +52,6 @@ class MainActivity : AppCompatActivity() {
         binding.bottombarRightButton.setOnClickListener {
             val direction = "Right"
             bottombarButton(direction)
-        }
-        binding.button1234.setOnClickListener{//임시로 만들어놓은 세이브 버튼(쉐어드프리퍼런스 잘 적용되는지 확인용)
-            saveData()
         }
     }
 
@@ -67,6 +65,7 @@ class MainActivity : AppCompatActivity() {
             searchResultFragment.arguments = bundle
             supportFragmentManager.beginTransaction().replace(R.id.Fragment, searchResultFragment)
                 .commit()
+
         } else if (direction == "Right") {
             binding.bottombarLeftText.setTextColor(Color.parseColor("#666666"))
             binding.bottombarLeftImage.setColorFilter(Color.parseColor("#666666"))
@@ -85,13 +84,15 @@ class MainActivity : AppCompatActivity() {
         // 데이터를 주고받는 과정에서 렉이 걸리면, 화면이 멈추게 됨. 그래서 메인쓰레드 바깥에 만들어준거. 이거는 room때도 설명함
         try {
             val responseData = NetWorkClient.imageNetWork.searchImages(param) //
-
-
+            responseData.documents.sortedByDescending { it.datetime } //
 
             bundle.putParcelable("responseData", responseData)
             Log.d("Parsing Dust ::", responseData.toString())
             // data class에서의 Retrofit 을 통해서 dataclass가 생성이 됨. 네트워크 요청을 통해 받은 Gson인가 json 데이터가 우리가 사용하고자 하는 data class로 변환이 된다.
 
+            val direction = "Left"
+            bottombarButton(direction)
+            searchResultFragment.updateAdapter(responseData)
         } catch (e: Exception) {
             Log.e("NetworkError", "Error occurred during network call: ${e.message}")
         }
@@ -111,7 +112,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 파일에서 JSON을 읽고 Document로 변환하기
-    private fun loadData(): MutableList<Document> {
+     fun loadData(): MutableList<Document> {
         val pref = getSharedPreferences("pref", 0)
 
         // SharedPreferences에서 JSON 문자열을 가져와서 MutableList<Document> 객체로 변환
@@ -126,7 +127,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //JSON으로 변환하고 파일에 저장하기
-    private fun saveData() {
+     fun saveData() {
         val pref = getSharedPreferences("pref", 0)
         val edit = pref.edit()
         // Document 리스트 객체를 JSON 문자열로 변환
@@ -137,14 +138,11 @@ class MainActivity : AppCompatActivity() {
         edit.apply()
     }
 
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState, outPersistentState)
+    override fun onPause() {
+        super.onPause()
         saveData()
     }
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("액티비티","종료됨")
-    }
+// 쉐어드 프리퍼런스 클래스를 따로 만들어서
 }
 
 /*
@@ -177,6 +175,15 @@ class MainActivity : AppCompatActivity() {
 3. [모델 클래스 선언] - data class에서
 
 SearchView 찾아보기. (EditText 대신할꺼) 그리고 import 아래꺼로.
+SearchView 하나도안이쁨 그냥 EditText 쓰자
 더 공부할꺼 : 앱갭라 숙련 GridView 의 autofit 등 여러가지속성
 
+위에있는거 탑바,액션바,상단바?
+
+밑에있는게 바텀바,내비게이션바
+
+탭 레이아웃 : 내가 무슨탭에 있어요 라고 알려주기 위해 씀
+
+ViewModel 알아보기
  */
+
