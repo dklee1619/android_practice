@@ -1,20 +1,29 @@
 package com.example.imagesearchpage.Fragment
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imagesearchpage.Adapter
+import com.example.imagesearchpage.MainActivity
 import com.example.imagesearchpage.NetWork.Document
 import com.example.imagesearchpage.data.ItemData
 import com.example.imagesearchpage.NetWork.Response
+import com.example.imagesearchpage.data.SharedPreferences
+import com.example.imagesearchpage.databinding.ActivityMainBinding
 import com.example.imagesearchpage.databinding.FragmentSearchResultBinding
 
 class searchResultFragment : Fragment() {
     private var _binding: FragmentSearchResultBinding? = null
     private val binding get() = _binding!!
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,6 +56,15 @@ class searchResultFragment : Fragment() {
         binding.gridview.layoutManager = LayoutManger
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val mainActivityBinding = (activity as MainActivity).binding
+        val textValue = mainActivityBinding.topbarSearch.text.toString()
+        ItemData.Pref.apply {
+            saveDocumentList(ItemData.item2)
+            saveName(textValue)
+        }
+    }
     fun ItemAdd(document: Document) {
         if (!document.favoritestate) {
             if (ItemData.fragstate) {
@@ -58,6 +76,7 @@ class searchResultFragment : Fragment() {
                 }
                 if (state) {
                     ItemData.item2.add(document)
+                    Toast.makeText(activity as MainActivity, "보관함에 데이터가 추가되었어요!", Toast.LENGTH_SHORT).show()
                 }
                 document.favoritestate = true
             }
@@ -66,6 +85,7 @@ class searchResultFragment : Fragment() {
             for (i in 0..ItemData.item2.size - 1) {
                 if (document.image_url == ItemData.item2[i].image_url) {
                     ItemData.item2.remove(document)
+                    Toast.makeText(context, "보관함의 데이터가 삭제되었어요!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -90,4 +110,10 @@ state를 true로 선언해준 후, 반복문을 통해 image_url이 같은 데�
 그리고 state가 true일때만 데이터를 추가해준다.
 화면은 따로 갱신해주지 않는다. 어짜피 추가된 데이터는 현재 프래그먼트에서 아무런 영향을 끼치지 않기 때문이다.
 2. 좋아요가 true면 false로 바꿔준 후, 반복문을 통해 image_url이 같은 데이터가 있는지 확인 후, 있으면 그 데이터를 삭제해준다.
+
+데이터 추가/삭제시 종종 에러나는것 확인해보기.
+
+[프래그먼트에서 Toast 사용하기]
+1. onAttach 함수를 오버라이드해서 선언하면, context를 쓸 수 있다.
+2. activity as MainActivity 이렇게 액티비티를 쓸 수 있다.
 */

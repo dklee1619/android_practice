@@ -11,6 +11,7 @@ object ItemData {
     val searchResultFragment = searchResultFragment()
     val myArchiveFragment = myArchiveFragment()
     val bundle: Bundle = Bundle()
+    lateinit var Pref: SharedPreferences
 }
 
 /*

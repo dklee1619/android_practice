@@ -1,15 +1,19 @@
 package com.example.imagesearchpage.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imagesearchpage.Adapter
 import com.example.imagesearchpage.MainActivity
 import com.example.imagesearchpage.NetWork.Document
 import com.example.imagesearchpage.data.ItemData
+import com.example.imagesearchpage.data.SharedPreferences
+import com.example.imagesearchpage.databinding.ActivityMainBinding
 import com.example.imagesearchpage.databinding.FragmentMyArchiveBinding
 
 class myArchiveFragment : Fragment() {
@@ -37,12 +41,21 @@ class myArchiveFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        (activity as MainActivity).saveData()
+        val mainActivityBinding = (activity as MainActivity).binding
+        val textValue = mainActivityBinding.topbarSearch.text.toString()
+        ItemData.Pref.apply {
+            Log.d("세이브","보관함프래그쪽")
+            Log.d("세이브","저장되기 직전의 텍스트는요 : ${textValue}")
+            saveDocumentList(ItemData.item2)
+            saveName(textValue)
+        }
         _binding = null
     }
-    fun ItemDelete(position: Int){
+
+    fun ItemDelete(position: Int) {
         ItemData.item2.removeAt(position)
         binding.gridview.adapter?.notifyItemRemoved(position)
+        Toast.makeText(activity as MainActivity, "보관함에서 데이터가 삭제되었어요!", Toast.LENGTH_SHORT).show()
     }
 }
 /*
