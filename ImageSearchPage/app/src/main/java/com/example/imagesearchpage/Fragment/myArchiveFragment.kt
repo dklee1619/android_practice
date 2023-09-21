@@ -5,55 +5,55 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.imagesearchpage.Adapter
 import com.example.imagesearchpage.MainActivity
-import com.example.imagesearchpage.data.Document
+import com.example.imagesearchpage.NetWork.Document
+import com.example.imagesearchpage.data.ItemData
 import com.example.imagesearchpage.databinding.FragmentMyArchiveBinding
 
 class myArchiveFragment : Fragment() {
-    private var _binding: FragmentMyArchiveBinding? =
-        null // 1. _binding의 기본값은 null 그리고 null이라 자료형에도 ? 붙음 그리고 var임
-    private val binding get() = _binding!! // 2. get()은 커스텀 게더 _binding이 null이 아닐때만 binding에 값이 전달됨
+    private var _binding: FragmentMyArchiveBinding? = null
+    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding =
-            FragmentMyArchiveBinding.inflate(inflater, container, false) // 3. _binding값 지정해주기
+            FragmentMyArchiveBinding.inflate(inflater, container, false)
         binding.gridview.adapter = Adapter(
-            MainActivity.item2,
+            ItemData.item2,
             (object : Adapter.OnItemClickListener {
                 override fun onItemClick(position: Int, document: Document) {
-                    MainActivity.item2.removeAt(position)
-                    binding.gridview.adapter?.notifyDataSetChanged() // 데이터 갱신을 해주지 않으면
-                    // java.lang.IndexOutOfBoundsException: Inconsistency detected. Invalid view holder adapter positionHolder 에러 발생
-                    // 리사이클러뷰의 데이터 세트와 내부 상태가 불일치할 때 발생
-//                    val indexToRemove = MainActivity.item2.indexOf(document)
-//
-//                    if (indexToRemove != -1) {
-//                        // 아이템 제거
-//                        MainActivity.item2.removeAt(indexToRemove)
-//                        // 리사이클러뷰에 알려주기
-//                        binding.gridview.adapter?.notifyItemRemoved(indexToRemove)
-//                    }
+                    ItemData.item2.removeAt(position)
+                    binding.gridview.adapter?.notifyItemRemoved(position)
                 }
             })
         )
 
-//        binding.gridview.layoutManager = LinearLayoutManager(requireContext()) // 이 경우는 수직 리스트입니다.
-        binding.gridview.layoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-
-        return binding.root // 4. 최상위 뷰로 설정
+        val LayoutManger = GridLayoutManager(context, 2)
+        binding.gridview.layoutManager = LayoutManger
+        return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        (activity as MainActivity).saveData() // 보관함 나가면 자동저장
-        _binding = null // 5. 프래그먼트 뷰 사라지면 메모리누수를 방지하기위해 바인딩 풀고 null로
+        (activity as MainActivity).saveData()
+        _binding = null
     }
-
 }
+/*
+[보관함 프래그먼트]
 
-//
+[리사이클러뷰 어댑터 연결]
+1. FragmentMyArchiveBinding를 binding 한 후
+2. Adapter를 연결, item2와 Adapter.OnItemClickListener타입의 익명객체를 입력으로 주었다.
+3. 익명 객체를 오버라이드한 메서드를 통해, 클릭한 position의 아이템을 삭제하는 로직과
+4. 입력으로 준 아이템이 삭제되었으므로, 리사이클러뷰에게 데이터 변화를 알려주는 메서드를 작성하였다.
+이걸 하지 않으면, 아이템의 인덱스 변화에 따른 인덱스가 맞지 않는 에러나, 화면이 올바르게 나타나지 않는 에러가 나게된다.
+5. 리사이클러뷰를 2열의 GridView로 주었다.
+
+[데이터 저장]
+1. 프래그먼트의 뷰가 파괴될 때 현재 데이터를 저장하는 함수를 호출하고,
+2. 데이터 누수를 방지하기 위해 binding을 해제하는 코드를 작성하였다.
+*/

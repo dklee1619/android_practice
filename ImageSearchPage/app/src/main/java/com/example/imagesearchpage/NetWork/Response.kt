@@ -1,4 +1,4 @@
-package com.example.imagesearchpage.data
+package com.example.imagesearchpage.NetWork
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
@@ -25,12 +25,20 @@ data class Document(
     val doc_url: String, // 문서 URL
     val datetime: String, // 문서 작성시간, ISO 8601 형식
     var favoritestate: Boolean = false // 내가 임의로 추가해준 데이터
-): Parcelable
+) : Parcelable
 
 /*
-[모델 클래스 선언]
-3. 응답 본문은 meta, documents로 구성된 JSON 객체라고 한다.
-3. Meta라는 데이터 클래스는, 3가지 파라미터를 포함한다.
-3. Document라는 데이터 클래스는, 8가지 파라미터를 포함한다.
-3. Response는 Meta라는 자료형과 List<Document>라는 자료형을 가지는 2가지 파라미터로 구성되있다.
-*/
+[data class 정의]
+1. https://developers.kakao.com/docs/latest/ko/daum-search/dev-guide#search-image 에서 데이터를 확인한다.
+2. 주소에서 확인한 데이터의 형태에 맞게 데이터를 작성한다.
+3. 추가적인 데이터도 작성 가능하다.
+
+[Parcelable 객체로 만들기]
+1. bundle과 arguments를 이용해 객체 데이터를 주고받기 위해서는 Parcelable 형태로 만들 필요가 있다.
+2. build.gradle (Module :app)의 plugins {
+ ...
+    id 'kotlin-parcelize'
+} 를 추가한다.
+3. 데이터 클래스 위에 @Parcelize라는 어노테이션을 달아주고
+4. 반환 형태를 Parcelable로 만들어준다.
+ */

@@ -23,14 +23,13 @@
         android:layout_height="wrap_content"
         android:text="ㅁㄴㅇㄻㄴㅇㄻㄴㄹ"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recycler_image"/>
+        app:layout_constraintBottom_toTopOf="@id/recycler_time"/>
     <TextView
         android:id="@+id/recycler_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ㅁㄴㅇㄻㄴㅇㄻㄴㄹ"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recycler_text"
         app:layout_constraintBottom_toBottomOf="parent"/>
     <ImageView
         android:id="@+id/recycler_favorite"
@@ -38,6 +37,6 @@
         android:layout_height="20dp"
         android:src="@drawable/baseline_favorite_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recycler_image"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
