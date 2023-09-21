@@ -25,7 +25,9 @@ interface NetWorkInterface {
 0. 요청 URL을 생성
 1. 요청 헤더를 설정 (이 때 @Headers에 정의된 헤더 값들이 사용)
 2. 실제 HTTP 요청을 수행(@GET(""))
+카카오 키를 깃이그노어로 안올라가게 막아버리는거 해두기
 
 [결론]
 query라는 변수명에 담긴 String 데이터를 입력 받아서, Response라는 이름을 가지는 Kotlin 객체를 반환한다.
+
 */

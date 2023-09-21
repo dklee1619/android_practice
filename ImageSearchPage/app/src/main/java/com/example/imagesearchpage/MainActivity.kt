@@ -5,17 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.lifecycleScope
-import com.example.imagesearchpage.NetWork.Document
 import com.example.imagesearchpage.data.ItemData
 import com.example.imagesearchpage.NetWork.NetWorkClient
+import com.example.imagesearchpage.data.SharedPreferences
 import com.example.imagesearchpage.databinding.ActivityMainBinding
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    lateinit var query: String
+    val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -55,33 +52,6 @@ class MainActivity : AppCompatActivity() {
             "size" to "80"
         )
     }
-
-    // 파일에서 JSON을 읽고 Document로 변환하기
-    fun loadData(): MutableList<Document> {
-        val pref = getSharedPreferences("pref", 0)
-
-        val jsonString = pref.getString("documentList", "")
-        binding.topbarSearch.setText(pref.getString("name", ""))
-        return if (jsonString != "") {
-            val type = object : TypeToken<MutableList<Document>>() {}.type
-            Gson().fromJson(jsonString, type)
-        } else {
-            mutableListOf()
-        }
-    }
-
-    //JSON으로 변환하고 파일에 저장하기
-    fun saveData() {
-        val pref = getSharedPreferences("pref", 0)
-        val jsonString = Gson().toJson(ItemData.item2)
-        val edit = pref.edit()
-        edit.apply {
-            putString("name", binding.topbarSearch.text.toString())
-            putString("documentList", jsonString)
-        }
-    }
-
-
     fun bottombarButton(direction: String) {
         if (direction == "Left") {
             binding.apply {
@@ -108,8 +78,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initialize() {
-        query = ""
-        ItemData.item2 = loadData()
+        ItemData.Pref = SharedPreferences(this)
+        ItemData.Pref.apply {
+            ItemData.item2 = loadDocumentList()
+            binding.topbarSearch.setText(loadName())
+        }
         ItemData.searchResultFragment.arguments = ItemData.bundle
         binding.apply { // 스코프함수로 묶어서 코드를 정리하자 !
             bottombarLeftText.setTextColor(Color.parseColor("#6200EE"))
@@ -119,10 +92,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        saveData()
-    }
 }
 /*
 [메인 액티비티]
@@ -137,17 +106,6 @@ class MainActivity : AppCompatActivity() {
 .
 [네트워크 함수 2가지/네트워크 요청을 위한 메서드]
 1. EditText에 입력한 변수를 HashMap 형태로 반환한다.
-
-[SharedPreferences 함수 2가지]
-[SharedPreferences 함수 2가지/데이터 로드를 위한 메서드]
-1. getSharedPreferences 인스턴스를 생성하고
-2. json 데이터(String)를 불러오고, EditText 데이터(String)을 불러오고 바로 뷰의 속성을 바꿔준다.
-3. json 데이터를 Kotlin 객체로 변환하고, 변환 타입은 <MutableList<Document>이다. 한편 값이 없으면 텅 빈 MutableListOf() 인스턴스를 생성한다.
-
-[SharedPreferences 함수 2가지/데이터 저장을 위한 메서드]
-1. EditText 데이터는 바로 저장하고,
-2. Kotlin 객체는 Json 데이터로 변환 후 String 형식으로 저장한다.
-
 
 [하단바 버튼 기능 함수]
 1. 어떤 방향의 버튼을 클릭하느냐에 따라 텍스트뷰와 이미지뷰가 다르게 변하게 하였다.
@@ -169,7 +127,8 @@ SearchView 하나도안이쁨 그냥 EditText 쓰자
 
 위에있는거 탑바,액션바,상단바?
 
-밑에있는게 바텀바,내비게이션바 이거도 알아보기
+밑에있는게 바텀바,내비게이션바 이거도 알아보기 // 내비게이션바나 뷰페이저를 썻으면, (확실하지는 않은데) 온크리에이트가 안되서 갱신이 안될수도있음.
+그러면, 따로 Notify 어쩌구 메서드를 호출해서 공지를 해줄 필요가 생김
 
 탭 레이아웃 : 내가 무슨탭에 있어요 라고 알려주기 위해 씀
 뷰페이저 알아보기
@@ -177,8 +136,10 @@ ViewModel 알아보기
 
 80개 추가로하는거, api 받아오는거 동영상
 
+에디트텍스트까지 프래그먼트 하나로 묶어두면, 번들을 쓸필요가 없다(하나의 프래그먼트니까) 이런방법도 있다는것 알아두고 가자.
 해야될꺼 다시 정리
 
+1. SharedPreferences 따로 클래스 파서 만들기
 1. View Model (+ Live Data, MVVM VS MVC) 한편 이거하면 bundle 쓸필요없어짐 데이터 전달 관련
 2. View Pager & Tap Layout
 3. SearchView ( Edit Text 대용)
