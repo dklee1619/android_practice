@@ -25,8 +25,7 @@ class myArchiveFragment : Fragment() {
             ItemData.item2,
             (object : Adapter.OnItemClickListener {
                 override fun onItemClick(position: Int, document: Document) {
-                    ItemData.item2.removeAt(position)
-                    binding.gridview.adapter?.notifyItemRemoved(position)
+                    ItemDelete(position)
                 }
             })
         )
@@ -41,6 +40,10 @@ class myArchiveFragment : Fragment() {
         (activity as MainActivity).saveData()
         _binding = null
     }
+    fun ItemDelete(position: Int){
+        ItemData.item2.removeAt(position)
+        binding.gridview.adapter?.notifyItemRemoved(position)
+    }
 }
 /*
 [보관함 프래그먼트]
@@ -48,10 +51,11 @@ class myArchiveFragment : Fragment() {
 [리사이클러뷰 어댑터 연결]
 1. FragmentMyArchiveBinding를 binding 한 후
 2. Adapter를 연결, item2와 Adapter.OnItemClickListener타입의 익명객체를 입력으로 주었다.
-3. 익명 객체를 오버라이드한 메서드를 통해, 클릭한 position의 아이템을 삭제하는 로직과
-4. 입력으로 준 아이템이 삭제되었으므로, 리사이클러뷰에게 데이터 변화를 알려주는 메서드를 작성하였다.
+3. 익명 객체를 오버라이드한 메서드를 통해, 클릭한 position의 아이템을 삭제하는 함수를 호출하엿다.
+[아이템을 삭제하는 로직을 가진 함수]
+입력으로 준 아이템이 삭제되었으므로, 리사이클러뷰에게 데이터 변화를 알려주는 메서드를 작성하였다.
 이걸 하지 않으면, 아이템의 인덱스 변화에 따른 인덱스가 맞지 않는 에러나, 화면이 올바르게 나타나지 않는 에러가 나게된다.
-5. 리사이클러뷰를 2열의 GridView로 주었다.
+4. 리사이클러뷰를 2열의 GridView로 주었다.
 
 [데이터 저장]
 1. 프래그먼트의 뷰가 파괴될 때 현재 데이터를 저장하는 함수를 호출하고,
